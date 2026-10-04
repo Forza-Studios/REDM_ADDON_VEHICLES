@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CMapTypes>
+  <extensions />
+  <archetypes>
+    <Item type="CBaseArchetypeDef">
+      <guid value="0"/>
+      <lodDist value="450.00000000"/>
+      <flags value="537001984" />
+      <loadFlags value="537001984" />
+      <specialAttribute value="0" />
+      <bbMin x="-0.18009719" y="-0.5788863" z="-0.5788691" />
+      <bbMax x="0.1221336" y="0.57888657" z="0.57886904" />
+      <bsCentre x="-0.028981797" y="1.4901161e-07" z="-2.9802322e-08" />
+      <bsRadius value="0.8324871" />
+      <hdTextureDist value="460.0"/>
+      <name>classicrear</name>
+      <textureDictionary>classic</textureDictionary>
+      <physicsDictionary>classicrear</physicsDictionary>
+      <clipDictionary />
+      <drawableDictionary />
+      <assetType>ASSET_TYPE_DRAWABLE</assetType>
+      <assetName>classicrear</assetName>
+      <extensions />
+      <redm_loves_you_a68fd88a5afa0b22 />
+    </Item>
+  </archetypes>
+  <name>classicrear</name>
+  <dependencies />
+  <compositeEntityTypes itemType="CCompositeEntityType" />
+</CMapTypes>
