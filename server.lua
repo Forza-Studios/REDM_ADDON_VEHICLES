@@ -36,7 +36,7 @@ end
 
 --------------------------------------------------------------------------------------------------------------------------------------------
 RegisterServerEvent("addon_vehicles:spawn_car")
-AddEventHandler("addon_vehicles:spawn_car", function(vehicleConfig)
+AddEventHandler("addon_vehicles:spawn_car", function(vehicleConfig, spawnCoords)
     local _source = source
     local player = GetPlayerData(_source)
 
@@ -48,13 +48,13 @@ AddEventHandler("addon_vehicles:spawn_car", function(vehicleConfig)
 
         -- If data is found, spawn the car, otherwise show the notification
         if dat then
-            TriggerClientEvent("addon_vehicles:spawn_c", _source, vehicleConfig)
+            TriggerClientEvent("addon_vehicles:spawn_c", _source, vehicleConfig, spawnCoords)
         else
             TriggerClientEvent("Notification:addon_vehicles", _source, Config.Texts.Dealership, Config.Texts.NoTruck, Config.Textures.locked[1], Config.Textures.locked[2], 2500)
         end
     else
         -- If 'vorp' is not true, just spawn the car as normal
-        TriggerClientEvent("addon_vehicles:spawn_c", _source, vehicleConfig)
+        TriggerClientEvent("addon_vehicles:spawn_c", _source, vehicleConfig, spawnCoords)
     end
 
     Wait(400)

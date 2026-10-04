@@ -48,11 +48,20 @@ local objectVisible = true
     local keySpace = 0xD9D0E1C0
 
 
-local function spawnVehicle(vehicleConfig)
+local function spawnVehicle(vehicleConfig, spawnCoords)
    ExecuteCommand(Config.DeleteCommand)
     Citizen.Wait(150)
     if not currentVehicle then
-        local pc = GetEntityCoords(PlayerPedId())        	
+        local pc
+        local spawnHeading = 1.0
+        if spawnCoords and spawnCoords.x and spawnCoords.y and spawnCoords.z then
+            -- Fixed pad spawn (e.g. rental shop): visible object lands exactly on the pad
+            pc = vector3(spawnCoords.x, spawnCoords.y, spawnCoords.z)
+            spawnHeading = spawnCoords.w or spawnCoords.h or spawnCoords.heading or 1.0
+        else
+            pc = GetEntityCoords(PlayerPedId())
+            spawnHeading = GetEntityHeading(PlayerPedId())
+        end
 		local vehicleModel = GetHashKey(vehicleConfig.objectModel)
 		local attach = vehicleConfig.attachOffsets
 		if vehicleConfig.weaponType then 
@@ -161,7 +170,7 @@ local function spawnVehicle(vehicleConfig)
         while not HasModelLoaded(model) or not HasModelLoaded(vehicleModel) or not HasModelLoaded(frontWheelModel) or not HasModelLoaded(rearWheelModel) do
             Citizen.Wait(5)
         end
-        local vehicle = CreateVehicle(model, pc.x + 2.0, pc.y, pc.z, (pc.h or 1.0), 1, 1, 0)
+        local vehicle = CreateVehicle(model, pc.x + 2.0, pc.y, pc.z, spawnHeading, 1, 1, 0)
         Citizen.Wait(150)
         FreezeEntityPosition(vehicle, 1)
         SetEntityVisible(vehicle, 0)
@@ -284,7 +293,7 @@ local function spawnVehicle(vehicleConfig)
 		while not HasModelLoaded(model) or not HasModelLoaded(vehicleModel) do
 		Citizen.Wait(5)
 		end
-		local vehicle = CreateVehicle(model, pc.x + 2.0, pc.y, pc.z, (pc.h or 1.0), 1, 1, 0)
+		local vehicle = CreateVehicle(model, pc.x + 2.0, pc.y, pc.z, spawnHeading, 1, 1, 0)
     Citizen.Wait(150)
     FreezeEntityPosition(vehicle, 1)
     SetEntityVisible(vehicle, 0)
@@ -330,7 +339,7 @@ local function spawnVehicle(vehicleConfig)
 		while not HasModelLoaded(model) or not HasModelLoaded(vehicleModel) do
 		Citizen.Wait(5)
 		end
-		local vehicle = CreateVehicle(model, pc.x + 2.0, pc.y, pc.z, (pc.h or 1.0), 1, 1, 0)
+		local vehicle = CreateVehicle(model, pc.x + 2.0, pc.y, pc.z, spawnHeading, 1, 1, 0)
     Citizen.Wait(150)
     FreezeEntityPosition(vehicle, 1)
     SetEntityVisible(vehicle, 0)
@@ -379,7 +388,7 @@ local function spawnVehicle(vehicleConfig)
 		while not HasModelLoaded(model) or not HasModelLoaded(vehicleModel) do
 		Citizen.Wait(5)
 		end
-		local vehicle = CreateVehicle(model, pc.x + 2.0, pc.y, pc.z, (pc.h or 1.0), 1, 1, 0)
+		local vehicle = CreateVehicle(model, pc.x + 2.0, pc.y, pc.z, spawnHeading, 1, 1, 0)
 		Citizen.Wait(150)
 		FreezeEntityPosition(vehicle, 1)
 		SetEntityVisible(vehicle, 0)
@@ -434,7 +443,7 @@ local function spawnVehicle(vehicleConfig)
 		while not HasModelLoaded(model) or not HasModelLoaded(vehicleModel) do
 		Citizen.Wait(5)
 		end
-		local vehicle = CreateVehicle(model, pc.x + 2.0, pc.y, pc.z, (pc.h or 1.0), 1, 1, 0)
+		local vehicle = CreateVehicle(model, pc.x + 2.0, pc.y, pc.z, spawnHeading, 1, 1, 0)
     Citizen.Wait(150)
     FreezeEntityPosition(vehicle, 1)
     SetEntityVisible(vehicle, 0)
@@ -470,7 +479,7 @@ else
 		while not HasModelLoaded(model) or not HasModelLoaded(vehicleModel) do
 		Citizen.Wait(5)
 		end
-		local vehicle = CreateVehicle(model, pc.x + 2.0, pc.y, pc.z, (pc.h or 1.0), 1, 1, 0)
+		local vehicle = CreateVehicle(model, pc.x + 2.0, pc.y, pc.z, spawnHeading, 1, 1, 0)
     Citizen.Wait(150)
     FreezeEntityPosition(vehicle, 1)
     SetEntityVisible(vehicle, 0)
@@ -479,7 +488,7 @@ else
     Citizen.Wait(300)
     AttachEntityToEntity(obj, vehicle, 0, attach[1], attach[2], attach[3], attach[4], attach[5], attach[6], 0, 1, 1, 0, 0, 2)
 	
-	local tanktop = CreateObject(vehicleConfig.tanktopModel, pc.x + 3.0, pc.y, pc.z, (pc.h or 1.0), 1, 1, 1) 
+	local tanktop = CreateObject(vehicleConfig.tanktopModel, pc.x + 3.0, pc.y, pc.z, spawnHeading, 1, 1, 1) 
   tanktopOffsets = vehicleConfig.tanktopOffsets
   AttachEntityToEntity(tanktop, vehicle, 0, tanktopOffsets.x, tanktopOffsets.y, tanktopOffsets.z, tanktopOffsets.rx, tanktopOffsets.ry, tanktopOffsets.rz, 0, 1, 1, 0, 0, 2)
 	
@@ -506,7 +515,7 @@ else
 		while not HasModelLoaded(model) or not HasModelLoaded(vehicleModel) do
 		Citizen.Wait(5)
 		end
-		local vehicle = CreateVehicle(model, pc.x + 2.0, pc.y, pc.z, (pc.h or 1.0), 1, 1, 0)
+		local vehicle = CreateVehicle(model, pc.x + 2.0, pc.y, pc.z, spawnHeading, 1, 1, 0)
     Citizen.Wait(150)
 	doorattach = vehicleConfig.doorattachOffsets	
     FreezeEntityPosition(vehicle, 1)
@@ -515,7 +524,7 @@ else
     local obj = CreateObject(vehicleModel, pc.x, pc.y, pc.z, 1, 1, 1)
     Citizen.Wait(300)
     AttachEntityToEntity(obj, vehicle, 0, attach[1], attach[2], attach[3], attach[4], attach[5], attach[6], 0, 1, 1, 0, 0, 2)
-	local doorobj = CreateObject(doormodel, pc.x + 3.0, pc.y, pc.z, (pc.h or 1.0), 1, 1, 0)
+	local doorobj = CreateObject(doormodel, pc.x + 3.0, pc.y, pc.z, spawnHeading, 1, 1, 0)
     Citizen.Wait(50)
     AttachEntityToEntity(doorobj, vehicle, 0, doorattach[1], doorattach[2], doorattach[3], doorattach[4], doorattach[5], doorattach[6], 0, 1, 1, 0, 0, 2)
     local rightthrusterModel = GetHashKey(vehicleConfig.rightthrusterModel)
@@ -578,7 +587,7 @@ else
 	while not HasModelLoaded(model) or not HasModelLoaded(vehicleModel) do
 		Citizen.Wait(5)
 		end
-		local vehicle = CreateVehicle(model, pc.x + 2.0, pc.y, pc.z, (pc.h or 1.0), 1, 1, 0)
+		local vehicle = CreateVehicle(model, pc.x + 2.0, pc.y, pc.z, spawnHeading, 1, 1, 0)
     Citizen.Wait(150)
 	doorattach = vehicleConfig.doorattachOffsets	
     FreezeEntityPosition(vehicle, 1)
@@ -587,7 +596,7 @@ else
     local obj = CreateObject(vehicleModel, pc.x, pc.y, pc.z, 1, 1, 1)
     Citizen.Wait(300)
     AttachEntityToEntity(obj, vehicle, 0, attach[1], attach[2], attach[3], attach[4], attach[5], attach[6], 0, 1, 1, 0, 0, 2)
-	local doorobj = CreateObject(doormodel, pc.x + 3.0, pc.y, pc.z, (pc.h or 1.0), 1, 1, 0)
+	local doorobj = CreateObject(doormodel, pc.x + 3.0, pc.y, pc.z, spawnHeading, 1, 1, 0)
     Citizen.Wait(50)
     AttachEntityToEntity(doorobj, vehicle, 0, doorattach[1], doorattach[2], doorattach[3], doorattach[4], doorattach[5], doorattach[6], 0, 1, 1, 0, 0, 2)
     local topPropellerModel = GetHashKey(vehicleConfig.bladeModel)
@@ -1577,7 +1586,20 @@ local function handleSpawnCommand(args)
         local vehicleType = args[1] or "truck"
         local vehicleConfig = Config.Vehicles[vehicleType]
         if vehicleConfig then
-            TriggerServerEvent("addon_vehicles:spawn_car", vehicleConfig)
+            -- Optional fixed pad: /get <name> <x> <y> <z> <heading>
+            local spawnCoords = nil
+            if args[2] and args[3] and args[4] then
+                spawnCoords = {
+                    x = tonumber(args[2]),
+                    y = tonumber(args[3]),
+                    z = tonumber(args[4]),
+                    w = tonumber(args[5]) or 1.0,
+                }
+                if not spawnCoords.x or not spawnCoords.y or not spawnCoords.z then
+                    spawnCoords = nil
+                end
+            end
+            TriggerServerEvent("addon_vehicles:spawn_car", vehicleConfig, spawnCoords)
         else
             print("Error: Vehicle type not found in configuration.")
         end
@@ -1592,8 +1614,8 @@ RegisterCommand("balboni", function(_, args)
     handleSpawnCommand(args)
 end, false)
 
-RegisterNetEvent("addon_vehicles:spawn_c", function(vehicleConfig)
-    spawnVehicle(vehicleConfig)
+RegisterNetEvent("addon_vehicles:spawn_c", function(vehicleConfig, spawnCoords)
+    spawnVehicle(vehicleConfig, spawnCoords)
 end)
 
 local function toggleObjectVisibility()
